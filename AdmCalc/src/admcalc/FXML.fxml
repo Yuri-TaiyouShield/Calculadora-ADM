@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.paint.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="admcalc.FXMLDocumentController" style="-fx-background-color: #f0f0f0;">
+    <top>
+        <HBox alignment="CENTER" style="-fx-background-color: #2c3e50; -fx-padding: 10;">
+            <Label text="Calculadora Financeira" style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" />
+        </HBox>
+    </top>
+    
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE" style="-fx-background-color: #ecf0f1;">
+            <!-- Aba de Operações Básicas -->
+            <Tab text="Operações Básicas">
+                <ScrollPane fitToWidth="true">
+                    <VBox spacing="15" style="-fx-background-color: #f9f9f9; -fx-padding: 15;">
+                        <Label text="Operações Básicas" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                        
+                        <!-- Faturamento -->
+                        <VBox spacing="5" style="-fx-background-color: #e8f4f8; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Faturamento" style="-fx-font-weight: bold; -fx-text-fill: #2980b9;" />
+                                <Label text="(Preço de Venda × Quantidade)" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <GridPane hgap="10" vgap="10" style="-fx-padding: 5;">
+                                <Label text="Preço de Venda (R$):" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputPrecoVenda" promptText="Ex: 49.90" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                
+                                <Label text="Quantidade:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputQuantidade" promptText="Ex: 100" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                
+                                <Button text="Calcular Faturamento" onAction="#calculateFaturamento" style="-fx-background-color: #3498db; -fx-text-fill: white;" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+                            </GridPane>
+                        </VBox>
+                        
+                        <!-- Lucro Bruto -->
+                        <VBox spacing="5" style="-fx-background-color: #e8f4f8; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Lucro Bruto" style="-fx-font-weight: bold; -fx-text-fill: #2980b9;" />
+                                <Label text="(Receita Total - CMV)" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <GridPane hgap="10" vgap="10" style="-fx-padding: 5;">
+                                <Label text="Receita Total (R$):" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputReceitaTotal" promptText="Ex: 5000.00" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                
+                                <Label text="Custo Mercadoria Vendida (R$):" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputCMV" promptText="Ex: 3000.00" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                
+                                <Button text="Calcular Lucro Bruto" onAction="#calculateLucroBruto" style="-fx-background-color: #3498db; -fx-text-fill: white;" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+                            </GridPane>
+                        </VBox>
+                        
+                        <!-- Lucro Líquido -->
+                        <VBox spacing="5" style="-fx-background-color: #e8f4f8; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Lucro Líquido" style="-fx-font-weight: bold; -fx-text-fill: #2980b9;" />
+                                <Label text="(Lucro Bruto - Despesas - Impostos)" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <GridPane hgap="10" vgap="10" style="-fx-padding: 5;">
+                                <Label text="Despesas (R$):" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputDespesas" promptText="Ex: 1000.00" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                
+                                <Label text="Impostos (R$):" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputImpostos" promptText="Ex: 500.00" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                
+                                <Button text="Calcular Lucro Líquido" onAction="#calculateLucroLiquido" style="-fx-background-color: #3498db; -fx-text-fill: white;" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+                            </GridPane>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+            
+            <!-- Aba de Margens e Custos -->
+            <Tab text="Margens e Custos">
+                <ScrollPane fitToWidth="true">
+                    <VBox spacing="15" style="-fx-background-color: #f9f9f9; -fx-padding: 15;">
+                        <Label text="Margens e Custos" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                        
+                        <!-- Margem de Lucro Bruta -->
+                        <VBox spacing="5" style="-fx-background-color: #e8f8f8; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Margem de Lucro Bruta" style="-fx-font-weight: bold; -fx-text-fill: #16a085;" />
+                                <Label text="(Lucro Bruto / Receita Total) × 100" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <Button text="Calcular Margem Bruta" onAction="#calculateMargemLucroBruta" style="-fx-background-color: #1abc9c; -fx-text-fill: white;" />
+                        </VBox>
+                        
+                        <!-- Margem de Lucro Líquida -->
+                        <VBox spacing="5" style="-fx-background-color: #e8f8f8; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Margem de Lucro Líquida" style="-fx-font-weight: bold; -fx-text-fill: #16a085;" />
+                                <Label text="(Lucro Líquido / Receita Total) × 100" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <Button text="Calcular Margem Líquida" onAction="#calculateMargemLucroLiquida" style="-fx-background-color: #1abc9c; -fx-text-fill: white;" />
+                        </VBox>
+                        
+                        <!-- Custo Total -->
+                        <VBox spacing="5" style="-fx-background-color: #f9ebea; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Custo Total" style="-fx-font-weight: bold; -fx-text-fill: #c0392b;" />
+                                <Label text="(Custos Fixos + Custos Variáveis)" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <GridPane hgap="10" vgap="10" style="-fx-padding: 5;">
+                                <Label text="Custos Fixos (R$):" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputCustosFixosTotal" promptText="Ex: 2000.00" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                
+                                <Label text="Custos Variáveis (R$):" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputCustosVariaveisTotal" promptText="Ex: 1500.00" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                
+                                <Button text="Calcular Custo Total" onAction="#calculateCustoTotal" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+                            </GridPane>
+                        </VBox>
+                        
+                        <!-- Custo Unitário -->
+                        <VBox spacing="5" style="-fx-background-color: #f9ebea; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Custo Unitário" style="-fx-font-weight: bold; -fx-text-fill: #c0392b;" />
+                                <Label text="(Custo Total / Quantidade Produzida)" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <GridPane hgap="10" vgap="10" style="-fx-padding: 5;">
+                                <Label text="Custo Total (R$):" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputCustoTotal" promptText="Ex: 3500.00" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                
+                                <Label text="Quantidade Produzida:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputQuantidadeProduzida" promptText="Ex: 500" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                
+                                <Button text="Calcular Custo Unitário" onAction="#calculateCustoUnitario" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+                            </GridPane>
+                        </VBox>
+                        
+                        <!-- Markup -->
+                        <VBox spacing="5" style="-fx-background-color: #f9ebea; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Markup de Preço" style="-fx-font-weight: bold; -fx-text-fill: #c0392b;" />
+                                <Label text="(Custo Total / (1 - Margem Desejada))" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <GridPane hgap="10" vgap="10" style="-fx-padding: 5;">
+                                <Label text="Custo Total (R$):" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputCustoTotalMarkup" promptText="Ex: 50.00" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                
+                                <Label text="Margem Desejada (%):" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputMarkup" promptText="Ex: 30" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                
+                                <Button text="Calcular Preço de Venda" onAction="#calculateMarkupPreco" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+                            </GridPane>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+            
+            <!-- Aba de Indicadores Financeiros -->
+            <Tab text="Indicadores Financeiros">
+                <ScrollPane fitToWidth="true">
+                    <VBox spacing="15" style="-fx-background-color: #f9f9f9; -fx-padding: 15;">
+                        <Label text="Indicadores Financeiros" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                        
+                        <!-- Ponto de Equilíbrio -->
+                        <VBox spacing="5" style="-fx-background-color: #eaf2f8; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Ponto de Equilíbrio" style="-fx-font-weight: bold; -fx-text-fill: #2874a6;" />
+                                <Label text="(Custos Fixos / Margem de Contribuição)" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <GridPane hgap="10" vgap="10" style="-fx-padding: 5;">
+                                <Label text="Custos Fixos (R$):" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputCustosFixos" promptText="Ex: 5000.00" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                
+                                <Label text="Margem de Contribuição (R$):" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputMargemContribuicao" promptText="Ex: 20.00" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                
+                                <Button text="Calcular Ponto de Equilíbrio" onAction="#calculatePontoEquilibrio" style="-fx-background-color: #3498db; -fx-text-fill: white;" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+                            </GridPane>
+                        </VBox>
+                        
+                        <!-- Margem de Contribuição -->
+                        <VBox spacing="5" style="-fx-background-color: #eaf2f8; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Margem de Contribuição" style="-fx-font-weight: bold; -fx-text-fill: #2874a6;" />
+                                <Label text="(Receita Total - Custos Variáveis)" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <Button text="Calcular Margem de Contribuição" onAction="#calculateMargemContribuicao" style="-fx-background-color: #3498db; -fx-text-fill: white;" />
+                        </VBox>
+                        
+                        <!-- ROI -->
+                        <VBox spacing="5" style="-fx-background-color: #e8f8f8; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Retorno sobre Investimento (ROI)" style="-fx-font-weight: bold; -fx-text-fill: #16a085;" />
+                                <Label text="((Ganho - Investimento) / Investimento) × 100" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <GridPane hgap="10" vgap="10" style="-fx-padding: 5;">
+                                <Label text="Ganho do Investimento (R$):" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputLucro" promptText="Ex: 15000.00" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                
+                                <Label text="Custo do Investimento (R$):" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputInvestimento" promptText="Ex: 10000.00" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                
+                                <Button text="Calcular ROI" onAction="#calculateROI" style="-fx-background-color: #1abc9c; -fx-text-fill: white;" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+                            </GridPane>
+                        </VBox>
+                        
+                        <!-- Liquidez Corrente -->
+                        <VBox spacing="5" style="-fx-background-color: #f5eef8; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Liquidez Corrente" style="-fx-font-weight: bold; -fx-text-fill: #8e44ad;" />
+                                <Label text="(Ativo Circulante / Passivo Circulante)" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <GridPane hgap="10" vgap="10" style="-fx-padding: 5;">
+                                <Label text="Ativo Circulante (R$):" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputAtivoCirculante" promptText="Ex: 50000.00" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                
+                                <Label text="Passivo Circulante (R$):" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputPassivoCirculante" promptText="Ex: 25000.00" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                
+                                <Button text="Calcular Liquidez Corrente" onAction="#calculateLiquidezCorrente" style="-fx-background-color: #9b59b6; -fx-text-fill: white;" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+                            </GridPane>
+                        </VBox>
+                        
+                        <!-- Liquidez Seca -->
+                        <VBox spacing="5" style="-fx-background-color: #f5eef8; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Liquidez Seca" style="-fx-font-weight: bold; -fx-text-fill: #8e44ad;" />
+                                <Label text="(Ativo Circulante - Estoque) / Passivo Circulante" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <Button text="Calcular Liquidez Seca" onAction="#calculateLiquidezSeca" style="-fx-background-color: #9b59b6; -fx-text-fill: white;" />
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+            
+            <!-- Aba de Balanço Patrimonial -->
+            <Tab text="Balanço Patrimonial">
+                <ScrollPane fitToWidth="true">
+                    <VBox spacing="15" style="-fx-background-color: #f9f9f9; -fx-padding: 15;">
+                        <Label text="Balanço Patrimonial" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                        
+                        <!-- Ativo Total -->
+                        <VBox spacing="5" style="-fx-background-color: #e8f6f3; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Ativo Total" style="-fx-font-weight: bold; -fx-text-fill: #0e6251;" />
+                                <Label text="(Ativo Circulante + Ativo Não Circulante)" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <GridPane hgap="10" vgap="10" style="-fx-padding: 5;">
+                                <Label text="Ativo Circulante (R$):" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputAtivoCirculanteTotal" promptText="Ex: 100000.00" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                
+                                <Label text="Ativo Não Circulante (R$):" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputAtivoNaoCirculante" promptText="Ex: 150000.00" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                
+                                <Button text="Calcular Ativo Total" onAction="#calculateAtivoTotal" style="-fx-background-color: #16a085; -fx-text-fill: white;" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+                            </GridPane>
+                        </VBox>
+                        
+                        <!-- Passivo Total -->
+                        <VBox spacing="5" style="-fx-background-color: #fdedec; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Passivo Total" style="-fx-font-weight: bold; -fx-text-fill: #c0392b;" />
+                                <Label text="(Passivo Circulante + Passivo Não Circulante)" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <GridPane hgap="10" vgap="10" style="-fx-padding: 5;">
+                                <Label text="Passivo Circulante (R$):" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputPassivoCirculanteTotal" promptText="Ex: 50000.00" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                
+                                <Label text="Passivo Não Circulante (R$):" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputPassivoNaoCirculante" promptText="Ex: 30000.00" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                
+                                <Button text="Calcular Passivo Total" onAction="#calculatePassivoTotal" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+                            </GridPane>
+                        </VBox>
+                        
+                        <!-- Patrimônio Líquido -->
+                        <VBox spacing="5" style="-fx-background-color: #fef9e7; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Patrimônio Líquido" style="-fx-font-weight: bold; -fx-text-fill: #b7950b;" />
+                                <Label text="(Ativo Total - Passivo Total)" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <Button text="Calcular Patrimônio Líquido" onAction="#calculatePatrimonioLiquido" style="-fx-background-color: #f39c12; -fx-text-fill: white;" />
+                        </VBox>
+                        
+                        <!-- Capital de Giro -->
+                        <VBox spacing="5" style="-fx-background-color: #eaf2f8; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Capital de Giro" style="-fx-font-weight: bold; -fx-text-fill: #2874a6;" />
+                                <Label text="(Ativo Circulante - Passivo Circulante)" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <Button text="Calcular Capital de Giro" onAction="#calculateCapitalGiro" style="-fx-background-color: #3498db; -fx-text-fill: white;" />
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+            
+            <!-- Aba de Investimentos -->
+            <Tab text="Investimentos">
+                <ScrollPane fitToWidth="true">
+                    <VBox spacing="15" style="-fx-background-color: #f9f9f9; -fx-padding: 15;">
+                        <Label text="Cálculos de Investimentos" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                        
+                        <!-- Valor Presente -->
+                        <VBox spacing="5" style="-fx-background-color: #f5eef8; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Valor Presente (VP)" style="-fx-font-weight: bold; -fx-text-fill: #8e44ad;" />
+                                <Label text="(VF / (1 + taxa)^período)" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <GridPane hgap="10" vgap="10" style="-fx-padding: 5;">
+                                <Label text="Valor Futuro (R$):" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputValorFuturo" promptText="Ex: 10000.00" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                
+                                <Label text="Taxa de Juros (% a.a.):" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputTaxaJuros" promptText="Ex: 10" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                
+                                <Label text="Período (anos):" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputPeriodo" promptText="Ex: 5" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                                
+                                <Button text="Calcular Valor Presente" onAction="#calculateValorPresente" style="-fx-background-color: #9b59b6; -fx-text-fill: white;" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+                            </GridPane>
+                        </VBox>
+                        
+                        <!-- Valor Futuro -->
+                        <VBox spacing="5" style="-fx-background-color: #f5eef8; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Valor Futuro (VF)" style="-fx-font-weight: bold; -fx-text-fill: #8e44ad;" />
+                                <Label text="(VP × (1 + taxa)^período)" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <Button text="Calcular Valor Futuro" onAction="#calculateValorFuturo" style="-fx-background-color: #9b59b6; -fx-text-fill: white;" />
+                        </VBox>
+                        
+                        <!-- TIR -->
+                        <VBox spacing="5" style="-fx-background-color: #e8f8f8; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Taxa Interna de Retorno (TIR)" style="-fx-font-weight: bold; -fx-text-fill: #16a085;" />
+                                <Label text="Taxa que zera o VPL do fluxo de caixa" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <Button text="Calcular TIR (Exemplo)" onAction="#calculateTIR" style="-fx-background-color: #1abc9c; -fx-text-fill: white;" />
+                        </VBox>
+                        
+                        <!-- Depreciação -->
+                        <VBox spacing="5" style="-fx-background-color: #fef9e7; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Depreciação Anual (Linear)" style="-fx-font-weight: bold; -fx-text-fill: #b7950b;" />
+                                <Label text="(Custo - Residual) / Vida Útil" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                            </HBox>
+                            <GridPane hgap="10" vgap="10" style="-fx-padding: 5;">
+                                <Label text="Custo do Bem (R$):" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputCustoInicial" promptText="Ex: 20000.00" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                
+                                <Label text="Valor Residual (R$):" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputValorResidual" promptText="Ex: 2000.00" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                
+                                <Label text="Vida Útil (anos):" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                                <TextField fx:id="inputVidaUtil" promptText="Ex: 5" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                                
+                                <Button text="Calcular Depreciação Anual" onAction="#calculateDepreciacao" style="-fx-background-color: #f39c12; -fx-text-fill: white;" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"/>
+                            </GridPane>
+                        </VBox>
+                    </VBox>
+                </ScrollPane>
+            </Tab>
+        </TabPane>
+    </center>
+    
+    <bottom>
+        <HBox alignment="CENTER" style="-fx-background-color: #2c3e50; -fx-padding: 10;">
+            <Label fx:id="resultLabel" text="Resultados aparecerão aqui" style="-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" />
+        </HBox>
+    </bottom>
+</BorderPane>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="AdmCalc.jnlp">
+  <information>
+    <title>AdmCalc</title>
+    <vendor>ancan</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="AdmCalc.jar" size="11505" download="eager" />
+    <jar href="lib\javaee-api-8.0.jar" size="1987147" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="800" height="600" main-class="admcalc.AdmCalc"  name="AdmCalc" />
+  <update check="always"/>
+</jnlp>
